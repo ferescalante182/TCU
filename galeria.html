@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Galería de Taller del Ciclista Urbano</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <style>
+        /* Style for the gallery */
+        .gallery-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .gallery-item {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item h3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            margin: 0;
+        }
+        /* Pagination styles */
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            cursor: pointer;
+            padding: 10px 15px;
+            margin: 0 5px;
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            color: #333;
+            text-decoration: none;
+        }
+        .pagination a.active {
+            background-color: #333;
+            color: white;
+            border: 1px solid #333;
+        }
+        .pagination a:hover {
+            background-color: #555;
+            color: white;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .modal-content {
+            display: none;
+            margin: auto;
+            width: 80%;
+            max-width: 700px;
+        }
+        .modal-content img {
+            width: 100%;
+        }
+        .modal-caption {
+            text-align: center;
+            padding: 10px;
+            color: white;
+        }
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        .next {
+            right: 10px;
+            border-radius: 3px 0 0 3px;
+        }
+        .prev {
+            left: 10px;
+            border-radius: 3px 0 0 3px;
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <!-- Header -->
+                <header id="header">
+                    <a href="index.html" class="logo"><strong>Taller del Ciclista Urbano</strong> - Galería</a>
+                    <ul class="icons">
+                        <li><a href="https://www.facebook.com/TallerDelCiclistaUrbanoTijuana/" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+                        <li><a href="https://www.instagram.com/tallerdelciclistaurbano/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+                    </ul>
+                </header>
+
+                <!-- Gallery Section -->
+                <section id="gallery">
+                    <div class="inner">
+                        <header class="major">
+                            <h1>Galería de Eventos</h1>
+                            <p>Explora las imágenes de nuestros talleres, salidas semanales y eventos especiales.</p>
+                        </header>
+                        <div class="gallery-container" id="gallery-container">
+                            <!-- Gallery items will be dynamically added here -->
+                        </div>
+                        <!-- Pagination controls -->
+                        <div class="pagination" id="pagination"></div>
+                    </div>
+                </section>
+
+                <!-- Modals for each gallery item -->
+                <div id="modal-template" class="modal">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <div class="modal-content"><img src="" alt=""></div>
+                    <div class="modal-content"><img src="" alt=""></div>
+                    <div class="modal-content"><img src="" alt=""></div>
+                    <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+                    <a class="next" onclick="changeSlide(1)">&#10095;</a>
+                    <div class="modal-caption"><p></p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar">
+            <div class="inner">
+                <!-- Search -->
+                <section id="search" class="alt">
+                    <form method="post" action="#">
+                        <input type="text" name="query" id="query" placeholder="Buscar...">
+                    </form>
+                </section>
+
+                <!-- Menu -->
+                <nav id="menu">
+                    <header class="major">
+                        <h2>Menú</h2>
+                    </header>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="taller.html">Taller mensual</a></li>
+                        <li><a href="elements.html">Galería</a></li>
+                        <li><a href="gruposLocales.html">Grupos Locales</a></li>
+                        <li><a href="directorioMecanicos.html">Directorio de Tiendas de Bicicletas</a></li>
+                        <li>
+                            <span class="opener">Submenú</span>
+                            <ul>
+                                <li><a href="mondayRide.html">Nuestra salida semanal cada lunes</a></li>
+                                <li><a href="#">Mantenimiento</a></li>
+                                <li><a href="#">Ciclismo Seguro</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Contact Information -->
+                <section>
+                    <header class="major">
+                        <h2>Contacto</h2>
+                    </header>
+                    <p>¿Tienes alguna duda? Contáctanos y te responderemos lo antes posible.</p>
+                    <ul class="contact">
+                        <li class="icon solid fa-envelope"><a href="mailto:info@tallerdeciclistaurbano.com">info@tallerdeciclistaurbano.com</a></li>
+                        <li class="icon solid fa-phone">+52 (664) 123-4567</li>
+                        <li class="icon solid fa-home">Calle 123, Zona Centro, Tijuana, B.C., México</li>
+                    </ul>
+                </section>
+
+                <!-- Footer -->
+                <footer id="footer">
+                    <p class="copyright">&copy; Taller del Ciclista Urbano. Todos los derechos reservados. Diseño: <a href="https://html5up.net">HTML5 UP</a>.</p>
+                </footer>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+        const galleryData = [
+            { title: 'Evento 1', description: 'Descripción del Evento 1', images: ['https://picsum.photos/700/400?random=1', 'https://picsum.photos/700/400?random=2', 'https://picsum.photos/700/400?random=3'] },
+            { title: 'Evento 2', description: 'Descripción del Evento 2', images: ['https://picsum.photos/700/400?random=4', 'https://picsum.photos/700/400?random=5', 'https://picsum.photos/700/400?random=6'] },
+            { title: 'Evento 3', description: 'Descripción del Evento 3', images: ['https://picsum.photos/700/400?random=7', 'https://picsum.photos/700/400?random=8', 'https://picsum.photos/700/400?random=9'] },
+            { title: 'Evento 4', description: 'Descripción del Evento 4', images: ['https://picsum.photos/700/400?random=10', 'https://picsum.photos/700/400?random=11', 'https://picsum.photos/700/400?random=12'] },
+            { title: 'Evento 5', description: 'Descripción del Evento 5', images: ['https://picsum.photos/700/400?random=13', 'https://picsum.photos/700/400?random=14', 'https://picsum.photos/700/400?random=15'] },
+            { title: 'Evento 6', description: 'Descripción del Evento 6', images: ['https://picsum.photos/700/400?random=16', 'https://picsum.photos/700/400?random=17', 'https://picsum.photos/700/400?random=18'] }
+        ];
+
+        const itemsPerPage = 6;
+        let currentPage = 1;
+
+        const galleryContainer = document.getElementById('gallery-container');
+        const modalTemplate = document.getElementById('modal-template');
+        let currentModal;
+
+        function createGalleryItems() {
+            galleryData.forEach((event, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.classList.add('gallery-item');
+                galleryItem.setAttribute('data-index', index);
+                galleryItem.innerHTML = `<img src="${event.images[0]}" alt="${event.title}"><h3>${event.title}</h3>`;
+                galleryItem.onclick = () => openModal(index);
+                galleryContainer.appendChild(galleryItem);
+            });
+        }
+
+        function displayItems(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const items = galleryContainer.children;
+            for (let i = 0; i < items.length; i++) {
+                items[i].style.display = (i >= start && i < end) ? 'block' : 'none';
+            }
+        }
+
+        function createPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= Math.ceil(galleryData.length / itemsPerPage); i++) {
+                const pageLink = document.createElement('a');
+                pageLink.textContent = i;
+                pageLink.href = '#';
+                pageLink.classList.add(i === currentPage ? 'active' : '');
+                pageLink.onclick = (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    displayItems(currentPage);
+                    updatePagination();
+                };
+                pagination.appendChild(pageLink);
+            }
+        }
+
+        function updatePagination() {
+            const pageLinks = document.querySelectorAll('.pagination a');
+            pageLinks.forEach((link, index) => {
+                link.classList.toggle('active', index + 1 === currentPage);
+            });
+        }
+
+        function openModal(index) {
+            currentModal = index;
+            const modal = modalTemplate.cloneNode(true);
+            modal.id = 'modal' + index;
+            modal.style.display = 'block';
+            const slides = modal.getElementsByClassName('modal-content');
+            slides[0].innerHTML = `<img src="${galleryData[index].images[0]}" alt="${galleryData[index].title}">`;
+            slides[1].innerHTML = `<img src="${galleryData[index].images[1]}" alt="${galleryData[index].title}">`;
+            slides[2].innerHTML = `<img src="${galleryData[index].images[2]}" alt="${galleryData[index].title}">`;
+            document.body.appendChild(modal);
+            slides[0].style.display = 'block';
+            modal.currentSlide = 0;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal' + currentModal);
+            modal.style.display = 'none';
+            modal.remove();
+        }
+
+        function changeSlide(n) {
+            const modal = document.getElementById('modal' + currentModal);
+            const slides = modal.getElementsByClassName('modal-content');
+            let currentSlide = modal.currentSlide || 0;
+            slides[currentSlide].style.display = 'none';
+            currentSlide = (currentSlide + n + slides.length) % slides.length;
+            slides[currentSlide].style.display = 'block';
+            modal.currentSlide = currentSlide;
+        }
+
+        createGalleryItems();
+        displayItems(currentPage);
+        createPagination();
+    </script>
+</body>
+</html>
